@@ -20,7 +20,7 @@
 
   Game.prototype.isGridPositionEmpty = function(gridPosition) {
     if (this.grid[gridPosition] !== "") {
-      return "This spot has already been taken"
+      throw new Error("This spot has already been taken")
     }
   };
 

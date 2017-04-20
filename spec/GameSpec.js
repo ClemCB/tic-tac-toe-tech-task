@@ -36,8 +36,7 @@ describe("Game", function() {
 
     it("the game prevents the same grid position from being chosen twice", function() {
       game.grid[0] = "X"
-      game.play(0)
-      expect(game.isGridPositionEmpty()).toEqual("This spot has already been taken")
+      expect(function() {game.isGridPositionEmpty(0)}).toThrowError("This spot has already been taken")
     });
 
     it("the game alternates players between 'O' and 'X'", function() {
@@ -130,7 +129,7 @@ describe("Game", function() {
       game.play(5) // X
       game.play(2)
       game.play(6) // X
-      game.play(9)
+      game.play(1)
       game.play(3) // X
       game.play(8)
       game.play(4) // X
