@@ -2,21 +2,20 @@
 
   function Game() {
     this.grid = {0:"",
-                 1: "",
-                 2: "",
-                 3: "",
-                 4: "",
-                 5: "",
-                 6: "",
-                 7: "",
-                 8: ""};
-   this.playCount = 0;
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: "",
+    6: "",
+    7: "",
+    8: ""};
+    this.rules = new Rules;
   };
 
   Game.prototype.play = function (gridPosition) {
     this.isGridPositionEmpty(gridPosition)
     this.grid[gridPosition] = this.assignPlayerTurn();
-    this.playCount += 1;
   };
 
   Game.prototype.isGridPositionEmpty = function(gridPosition) {
@@ -47,7 +46,23 @@
         o.push(key)
       }
     }
+
+    for (var i = 0; i < this.rules.winningCombos.length; i++) {
+      if (arrayContainsAnotherArray(this.rules.winningCombos[i], x)) {
+        return "X wins!"
+      } else if (arrayContainsAnotherArray(this.rules.winningCombos[i], o)) {
+        return "O wins!"
+      }
+    }
   };
+
+  function arrayContainsAnotherArray(needle, haystack){
+    for(var i = 0; i < needle.length; i++){
+      if(haystack.indexOf(needle[i]) === -1)
+      return false;
+    }
+    return true;
+  }
 
   exports.Game = Game;
 
