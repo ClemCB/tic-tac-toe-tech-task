@@ -17,11 +17,11 @@ I want to alternate goes with another player.
 
 As a player,
 So that I can win a game of tic-tac-toe,
-I want the game to tell me when I draw three 'X' or 'O' in a row.
+I want the game to tell me when I win by drawing three 'X' or 'O' in a row.
 
 As a player,
 So that I can lose a game of tic-tac-toe,
-I want the game to tell me when the other player has drawn three 'X' or 'O' in a row.
+I want the game to tell me when the other player has won by drawing three 'X' or 'O' in a row.
 
 As a player,
 So that I can end a game of tic-tac-toe even without a winner,
