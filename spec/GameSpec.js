@@ -1,3 +1,5 @@
+"use strict"
+
 describe("Game", function() {
   var game;
 
@@ -24,10 +26,31 @@ describe("Game", function() {
   describe("play", function() {
 
     it("the game count increases when play function is called by a player", function() {
-      game.play()
+      game.play(0)
       expect(game.playCount).toEqual(1)
     });
+
+    it("the game function accepts the chosen grid position from a player", function() {
+      game.play(0)
+      expect(game.grid[0]).toEqual("X")
+    });
+
+    it("the game prevents the same grid position from being chosen twice", function() {
+      game.grid[0] = "X"
+      game.play(0)
+      expect(game.isGridPositionEmpty()).toEqual("This spot has already been taken")
+    });
+
+    it("the game alternates players between 'O' and 'X'", function() {
+      game.play(0)
+      game.play(4)
+      expect(game.grid[4]).toEqual("O")
+    });
+
 
   });
 
 });
+
+
+// Object.keys(myObject).length to end game rather than game count.
