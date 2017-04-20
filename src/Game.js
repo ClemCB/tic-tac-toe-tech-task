@@ -37,13 +37,17 @@
     }
   };
 
-
-
-
-
-  // Game.prototype.viewGrid = function () {
-  //   return Object.values(game.grid)
-  // };
+  Game.prototype.isThereAWinner = function () {
+    var x = []
+    var o = []
+    for (var [key, value] of Object.entries(this.grid)) {
+      if (value == 'X') {
+        x.push(key);
+      } else if (value == 'O') {
+        o.push(key)
+      }
+    }
+  };
 
   exports.Game = Game;
 

@@ -45,12 +45,16 @@ describe("Game", function() {
       game.play(0)
       game.play(4)
       expect(game.grid[4]).toEqual("O")
+      game.play(5)
+      expect(game.grid[5]).toEqual("X")
     });
-
-
   });
 
+  describe("check for winner", function() {
+
+    it("the game returns a win if a combo of three is found", function() {
+      expect(game.isThereAWinner()).toEqual("Winner!")
+    });
+
+  });
 });
-
-
-// Object.keys(myObject).length to end game rather than game count.
