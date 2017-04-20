@@ -41,88 +41,22 @@ describe("Game", function() {
 
     it("the game alternates players between 'O' and 'X'", function() {
       game.play(0)
+      expect(game.grid[0]).toEqual("X")
+
       game.play(4)
       expect(game.grid[4]).toEqual("O")
+
       game.play(5)
       expect(game.grid[5]).toEqual("X")
     });
   });
 
-  describe("check for winner", function() {
+  describe("winning combinations", function() {
 
-    it("winning combination [0, 1, 2]", function() {
-      game.play(0) // X
-      game.play(5)
-      game.play(1) // X
-      game.play(6)
-      game.play(2) // X
-      expect(game.isThereAWinner()).toEqual("X wins!")
-    });
-
-    it("winning combination [0, 3, 6]", function() {
-      game.play(0) // X
-      game.play(5)
-      game.play(3) // X
-      game.play(2)
-      game.play(6) // X
-      expect(game.isThereAWinner()).toEqual("X wins!")
-    });
-
-    it("winning combination [0, 4, 8]", function() {
-      game.play(1)
-      game.play(0) // O
-      game.play(3)
-      game.play(4) // O
-      game.play(7)
-      game.play(8) // O
-      expect(game.isThereAWinner()).toEqual("O wins!")
-    });
-
-    it("winning combination [1, 4 ,7]", function() {
-      game.play(5)
-      game.play(1) // O
-      game.play(3)
-      game.play(4) // O
-      game.play(8)
-      game.play(7) // O
-      expect(game.isThereAWinner()).toEqual("O wins!")
-    });
-
-    it("winning combination [2, 4, 6]", function() {
-      game.play(2) // X
-      game.play(1)
-      game.play(4) // X
-      game.play(8)
-      game.play(6) // X
-      expect(game.isThereAWinner()).toEqual("X wins!")
-    });
-
-    it("winning combination [2, 5, 8]", function() {
-      game.play(2) // X
-      game.play(1)
-      game.play(5) // X
-      game.play(6)
-      game.play(8) // X
-      expect(game.isThereAWinner()).toEqual("X wins!")
-    });
-
-    it("winning combination [3, 4, 5]", function() {
-      game.play(0)
-      game.play(3) // O
-      game.play(1)
-      game.play(4) // O
-      game.play(6)
-      game.play(5) // O
-      expect(game.isThereAWinner()).toEqual("O wins!")
-    });
-
-    it("winning combination [6, 7, 8]", function() {
-      game.play(6) // X
-      game.play(1)
-      game.play(7) // X
-      game.play(4)
-      game.play(8) // X
-      expect(game.isThereAWinner()).toEqual("X wins!")
+    it("useGridValuesToFindWinner function called to check winner", function() {
+      spyOn(game, 'useGridValuesToFindWinner')
+      game.isThereAWinner()
+      expect(game.useGridValuesToFindWinner).toHaveBeenCalled()
     });
 
     it("the game returns a win when a combo is achieved after more than 3 turns", function() {
@@ -134,6 +68,89 @@ describe("Game", function() {
       game.play(8)
       game.play(4) // X
       expect(game.isThereAWinner()).toEqual("X wins!")
+    });
+
+    it("[0, 1, 2]", function() {
+      game.play(0) // X
+      game.play(5)
+      game.play(1) // X
+      game.play(6)
+      game.play(2) // X
+      expect(game.isThereAWinner()).toEqual("X wins!")
+    });
+
+    it("[0, 3, 6]", function() {
+      game.play(0) // X
+      game.play(5)
+      game.play(3) // X
+      game.play(2)
+      game.play(6) // X
+      expect(game.isThereAWinner()).toEqual("X wins!")
+    });
+
+    it("[0, 4, 8]", function() {
+      game.play(1)
+      game.play(0) // O
+      game.play(3)
+      game.play(4) // O
+      game.play(7)
+      game.play(8) // O
+      expect(game.isThereAWinner()).toEqual("O wins!")
+    });
+
+    it("[1, 4 ,7]", function() {
+      game.play(5)
+      game.play(1) // O
+      game.play(3)
+      game.play(4) // O
+      game.play(8)
+      game.play(7) // O
+      expect(game.isThereAWinner()).toEqual("O wins!")
+    });
+
+    it("[2, 4, 6]", function() {
+      game.play(2) // X
+      game.play(1)
+      game.play(4) // X
+      game.play(8)
+      game.play(6) // X
+      expect(game.isThereAWinner()).toEqual("X wins!")
+    });
+
+    it("[2, 5, 8]", function() {
+      game.play(2) // X
+      game.play(1)
+      game.play(5) // X
+      game.play(6)
+      game.play(8) // X
+      expect(game.isThereAWinner()).toEqual("X wins!")
+    });
+
+    it("[3, 4, 5]", function() {
+      game.play(0)
+      game.play(3) // O
+      game.play(1)
+      game.play(4) // O
+      game.play(6)
+      game.play(5) // O
+      expect(game.isThereAWinner()).toEqual("O wins!")
+    });
+
+    it("[6, 7, 8]", function() {
+      game.play(6) // X
+      game.play(1)
+      game.play(7) // X
+      game.play(4)
+      game.play(8) // X
+      expect(game.isThereAWinner()).toEqual("X wins!")
+    });
+  });
+
+  describe("game ends", function() {
+
+    it("when all 9 grid positions taken", function() {
+      game.grid = {0:"X", 1: "O", 2: "X", 3: "O", 4: "O", 5: "X", 6: "X", 7: "X", 8: "O"};
+      expect(game.isThereAWinner()).toEqual("The game has finished!")
     });
   });
 });

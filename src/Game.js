@@ -16,6 +16,7 @@
   Game.prototype.play = function (gridPosition) {
     this.isGridPositionEmpty(gridPosition)
     this.grid[gridPosition] = this.assignPlayerTurn();
+    this.isThereAWinner();
   };
 
   Game.prototype.isGridPositionEmpty = function(gridPosition) {
@@ -37,32 +38,37 @@
   };
 
   Game.prototype.isThereAWinner = function () {
-      var x = []
-      var o = []
+      var x_grid_indexes = []
+      var o_grid_indexes = []
       for (var [key, value] of Object.entries(this.grid)) {
         if (value == 'X') {
-          x.push(key);
+          x_grid_indexes.push(key);
         } else if (value == 'O') {
-          o.push(key)
+          o_grid_indexes.push(key)
         }
     }
-    return this.searchRulesForWinner(x, o)
+    return this.useGridValuesToFindWinner(x_grid_indexes, o_grid_indexes)
   };
 
 
-  Game.prototype.searchRulesForWinner = function (x_grid_indexes, o_grid_indexes) {
+  Game.prototype.useGridValuesToFindWinner = function (x_grid_indexes, o_grid_indexes) {
     for (var i = 0; i < this.rules.winningCombos.length; i++) {
-      if (arrayContainsAnotherArray(this.rules.winningCombos[i], x_grid_indexes)) {
+      if (doTheRulesContainPlayerGridValues(this.rules.winningCombos[i], x_grid_indexes)) {
         return "X wins!"
-      } else if (arrayContainsAnotherArray(this.rules.winningCombos[i], o_grid_indexes)) {
+      } else if (doTheRulesContainPlayerGridValues(this.rules.winningCombos[i], o_grid_indexes)) {
         return "O wins!"
       }
     }
+    return isGridFull(x_grid_indexes, o_grid_indexes)
   };
 
-  function arrayContainsAnotherArray(needle, haystack){
-    for(var i = 0; i < needle.length; i++){
-     if(haystack.indexOf(needle[i]) === -1)
+  function isGridFull(x, o) {
+    return (x.length + o.length === 9) ? "The game has finished!" : false;
+   };
+
+  function doTheRulesContainPlayerGridValues(rules, player_grid_indexes){
+    for(var i = 0; i < rules.length; i++){
+     if(player_grid_indexes.indexOf(rules[i]) === -1)
       return false;
     }
     return true;
