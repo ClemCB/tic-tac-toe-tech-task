@@ -30,7 +30,14 @@
     }
   };
 
+  Game.prototype.isGridPositionEmpty = function(gridPosition) {
+    if (this.grid[gridPosition] !== "") {
+      throw new Error("This spot has already been taken");
+    }
+  };
+
   Game.prototype.isThereAWinner = function () {
+    //would like to refactor this function further
     if (this.isTheWinner('X')) {
       return 'X wins!'
     } else if (this.isTheWinner('O')) {
@@ -38,26 +45,20 @@
     }
   };
 
-  Game.prototype.isGridPositionEmpty = function(gridPosition) {
-    if (this.grid[gridPosition] !== "") {
-      throw new Error("This spot has already been taken");
-    }
-  };
-
-  Game.prototype.isTheWinner = function (something) {
+  Game.prototype.isTheWinner = function (x_or_o_value) {
     var values_array = [];
     for (var [key, value] of Object.entries(this.grid)) {
-      if (value == something) {
+      if (value == x_or_o_value) {
         values_array.push(key);
       }
     }
     return this.useGridValuesToFindWinner(values_array);
   };
 
-    Game.prototype.useGridValuesToFindWinner = function (something) {
+    Game.prototype.useGridValuesToFindWinner = function (values_array) {
       for (var i = 0; i < this.rules.winningCombos.length; i++) {
-        if (doTheRulesContainPlayerGridValues(this.rules.winningCombos[i], something)) {
-          return "Winner!";
+        if (doTheRulesContainPlayerGridValues(this.rules.winningCombos[i], values_array)) {
+          return true;
         }
       }
     };
