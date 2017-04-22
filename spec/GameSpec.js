@@ -150,7 +150,7 @@ describe("Game", function() {
 
     it("when all 9 grid positions taken", function() {
       game.grid = {0:"X", 1: "O", 2: "X", 3: "O", 4: "O", 5: "X", 6: "X", 7: "X", 8: "O"};
-      expect(game.isThereAWinner()).toEqual("The game has finished!")
+      expect(game.isGridFull()).toEqual("The game has finished!")
     });
   });
 });

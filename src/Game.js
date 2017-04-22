@@ -10,70 +10,72 @@
     6: "",
     7: "",
     8: ""};
-    this.rules = new Rules;
-  };
+    this.rules = new Rules();
+  }
 
   Game.prototype.play = function (gridPosition) {
-    this.isGridPositionEmpty(gridPosition)
+    this.isGridPositionEmpty(gridPosition);
     this.grid[gridPosition] = this.assignPlayerTurn();
     this.isThereAWinner();
   };
 
-  Game.prototype.isGridPositionEmpty = function(gridPosition) {
-    if (this.grid[gridPosition] !== "") {
-      throw new Error("This spot has already been taken")
-    }
-  };
 
   Game.prototype.assignPlayerTurn = function() {
     var counts = {};
     (Object.values(this.grid)).forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
-    if (counts['X'] == undefined || counts['X'] === counts['O']) {
-      return 'X'
-    } else if (counts['O'] == undefined || counts['X'] > counts['O']) {
-      return 'O'
+    if (counts['X'] === undefined || counts['X'] === counts['O']) {
+      return 'X';
+    } else if (counts['O'] === undefined || counts['X'] > counts['O']) {
+      return 'O';
     }
   };
 
   Game.prototype.isThereAWinner = function () {
-    var x_grid_indexes = []
-    var o_grid_indexes = []
+    if (this.isTheWinner('X')) {
+      return 'X wins!'
+    } else if (this.isTheWinner('O')) {
+      return 'O wins!'
+    }
+  };
+
+  Game.prototype.isGridPositionEmpty = function(gridPosition) {
+    if (this.grid[gridPosition] !== "") {
+      throw new Error("This spot has already been taken");
+    }
+  };
+
+  Game.prototype.isTheWinner = function (something) {
+    var values_array = [];
     for (var [key, value] of Object.entries(this.grid)) {
-      if (value == 'X') {
-        x_grid_indexes.push(key);
-      } else if (value == 'O') {
-        o_grid_indexes.push(key)
+      if (value == something) {
+        values_array.push(key);
       }
     }
-    return this.useGridValuesToFindWinner(x_grid_indexes, o_grid_indexes)
+    return this.useGridValuesToFindWinner(values_array);
   };
 
-
-  Game.prototype.useGridValuesToFindWinner = function (x_grid_indexes, o_grid_indexes) {
-    for (var i = 0; i < this.rules.winningCombos.length; i++) {
-      if (doTheRulesContainPlayerGridValues(this.rules.winningCombos[i], x_grid_indexes)) {
-        return "X wins!"
-      } else if (doTheRulesContainPlayerGridValues(this.rules.winningCombos[i], o_grid_indexes)) {
-        return "O wins!" //change from strings
+    Game.prototype.useGridValuesToFindWinner = function (something) {
+      for (var i = 0; i < this.rules.winningCombos.length; i++) {
+        if (doTheRulesContainPlayerGridValues(this.rules.winningCombos[i], something)) {
+          return "Winner!";
+        }
       }
+    };
+
+    Game.prototype.isGridFull = function () {
+      if(!("" in this.grid)) {
+        return "The game has finished!"
+      }
+    };
+
+    function doTheRulesContainPlayerGridValues(rules, player_grid_indexes){
+      for(var i = 0; i < rules.length; i++){
+        if(player_grid_indexes.indexOf(rules[i]) === -1)
+        return false;
+      }
+      return true;
     }
-    return isGridFull(x_grid_indexes, o_grid_indexes)
-  };
 
-  function isGridFull(x, o) {
-    if (x.length + o.length === 9) {
-      return "The game has finished!";
-    }
-  };
+    exports.Game = Game;
 
-  function doTheRulesContainPlayerGridValues(rules, player_grid_indexes){
-    for(var i = 0; i < rules.length; i++){
-      if(player_grid_indexes.indexOf(rules[i]) === -1)
-      return false;
-    }
-    return true;
-  }
-
-  exports.Game = Game;
-
-})(this);
+  })(this);
